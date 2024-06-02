@@ -6,13 +6,13 @@ on:
       - 'plugins/**'
       - 'roles/**'
       - 'tests/**'
-      - '.github/workflows/sanity-checks-plugins.yml'
+      - '.github/workflows/publish-collection.yml'
   pull_request:
     paths:
       - 'plugins/**'
       - 'roles/**'
       - 'tests/**'
-      - '.github/workflows/sanity-checks-plugins.yml'
+      - '.github/workflows/publish-collection.yml'
 
 jobs:
   sanity:

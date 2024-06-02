@@ -2,7 +2,7 @@
 namespace: kube_cloud
 
 # Collection Name
-name: general
+name: ovh
 
 # Collection Version
 version: 1.2.0
@@ -17,7 +17,7 @@ authors:
 
 
 # Vollection Description
-description: KubeCloud Ansible General OPS Collection
+description: KubeCloud Ansible OVH Collection
 
 # Collection License (https://spdx.org/licenses/)
 license:
@@ -29,8 +29,11 @@ tags:
 - cloud
 - ops
 - system
-- proxy
-- linux
+- network
+- dns
+- compute
+- security
+- ovh
 
 # Collection Dependencies
 # collection label 'namespace.name'. The value is a version range
@@ -39,16 +42,16 @@ tags:
 dependencies: {}
 
 # The URL of the originating SCM repository
-repository: https://github.com/kube-cloud/ansible-collection-general
+repository: https://github.com/kube-cloud/ansible-collection-ovh
 
 # The URL to any online docs
-documentation: https://github.com/kube-cloud/ansible-collection-general/tree/main/docs
+documentation: https://github.com/kube-cloud/ansible-collection-ovh/tree/main/docs
 
 # The URL to the homepage of the collection/project
-homepage: https://github.com/kube-cloud/ansible-collection-general
+homepage: https://github.com/kube-cloud/ansible-collection-ovh
 
 # The URL to the collection issue tracker
-issues: https://github.com/kube-cloud/ansible-collection-general/issues
+issues: https://github.com/kube-cloud/ansible-collection-ovh/issues
 
 build_ignore:
   - ".editorconfig"
