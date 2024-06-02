@@ -5,7 +5,7 @@ namespace: kube_cloud
 name: ovh
 
 # Collection Version
-version: 1.2.0
+version: 1.3.0
 
 # Collection README (Summary)
 readme: README.md
@@ -34,12 +34,18 @@ tags:
 - compute
 - security
 - ovh
+- ssl
+- acme
+- letencrypt
 
 # Collection Dependencies
 # collection label 'namespace.name'. The value is a version range
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
-dependencies: {}
+dependencies: {
+  "community.general": ">=4.0.0",
+  "community.crypto": ">=2.15.0"
+}
 
 # The URL of the originating SCM repository
 repository: https://github.com/kube-cloud/ansible-collection-ovh

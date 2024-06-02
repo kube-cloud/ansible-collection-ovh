@@ -228,7 +228,7 @@ def get_ovh_record(module, client, domain, record_id):
 
 
 # Find and Return OVH Record
-def create_ovh_record(module, client, domain, record_id, record_name, record_type, record_value, ttl):
+def create_ovh_record(module, client, domain, record_name, record_type, record_value, ttl):
 
     try:
 
@@ -245,7 +245,7 @@ def create_ovh_record(module, client, domain, record_id, record_name, record_typ
 
         # Set Module Error
         module.fail_json(
-            msg="[Create Record] - Failed to call OVH API (POST /domain/zone/{0}/record/{1}) : {2}".format(domain, record_id, api_error)
+            msg="[Create Record] - Failed to call OVH API (POST /domain/zone/{0}/record) : {1}".format(domain, api_error)
         )
 
 
@@ -338,7 +338,7 @@ def run_module(module, client):
     if state == 'present' and not existing_records:
 
         # Create Record
-        create_ovh_record(module, client, domain, record_id, record_name, record_type, target, ttl)
+        create_ovh_record(module, client, domain, record_name, record_type, target, ttl)
 
         # refresh Zone
         refresh_ovh_zone(module, client, domain)
