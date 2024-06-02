@@ -130,7 +130,7 @@ acme_csr_organization_name: "KubeCloud"
 acme_csr_organizational_unit_name: "DPEP - Digital Products Engineering and Platform"
 
 # ACME CSR Organization Contact Email
-acme_csr_email_address: "contact@kub-cloud.com"
+acme_csr_email_address: "contact@kube-cloud.com"
 
 # ACME CSR Digest Algorithm
 acme_csr_digest: sha256
