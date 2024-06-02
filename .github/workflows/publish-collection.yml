@@ -33,6 +33,11 @@ jobs:
           testing-type: sanity
           pull-request-change-detection: true
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
   publish:
     needs: sanity
     runs-on: ubuntu-latest
