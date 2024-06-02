@@ -107,7 +107,6 @@
       record_type: "TXT"
       target: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name][_acme_challenge].resource_value }}"
       state: 'present'
-    when: acme_dns_challenge_enabled
 
   # Ensure DNS Challenge Validated and Certificates Created
   - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure DNS Challenge Validated and Certificates Created"
@@ -123,16 +122,33 @@
       remaining_days: "{{ acme_certificate_remaining_days }}"
       acme_version: "{{ acme_version }}"
       data: "{{ acme_dns_challenge }}"
-    when: acme_dns_challenge_enabled
     register: domain_challenge_validated
+
+  # Ensure DNS Challenge Data Removed from OVH
+  - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure DNS Challenge Data Removed from OVH"
+    kube_cloud.ovh.dns.ovh_dns_record:
+      endpoint: "{{ ovh_endpoint }}"
+      application_key: "{{ ovh_application_key }}"
+      application_secret: "{{ ovh_application_secret }}"
+      consumer_key: "{{ ovh_consumer_key }}"
+      domain: "{{ root_domain }}"
+      record_name: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name][_acme_challenge].record | regex_replace('.' + root_domain + '$', '') }}"
+      record_type: "TXT"
+      target: "__NO_NEED_TARGET__"
+      state: absent
+    ignore_errors: true
+    changed_when: false
 
   when: "{{ acme_dns_challenge_enabled }}"
 
 # Ensure All Output Variables are Defined
 - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure All Output Facts are Defined"
   ansible.builtin.set_fact:
-    "{{ acme_cert_file_path_var }}": "{{ _acme_cert_file }}"
-    "{{ acme_fullchain_cert_file_path_var }}": "{{ _acme_fullchain_cert_file }}"
-    "{{ acme_intermediate_cert_file_path_var }}": "{{ _acme_intermediatechain_cert_file }}"
-    "{{ acme_csr_file_path_var }}": "{{ _acme_csr_file }}"
-    "{{ acme_private_key_file_path_var }}": "{{ _acme_private_key_file }}"
+    "{{ item.name }}": "{{ item.value }}"
+  loop:
+    - { name: "{{ acme_cert_file_path_var }}", value: "{{ _acme_cert_file }}" }
+    - { name: "{{ acme_fullchain_cert_file_path_var }}", value: "{{ _acme_fullchain_cert_file }}" }
+    - { name: "{{ acme_intermediate_cert_file_path_var }}", value: "{{ _acme_intermediatechain_cert_file }}" }
+    - { name: "{{ acme_csr_file_path_var }}", value: "{{ _acme_csr_file }}" }
+    - { name: "{{ acme_private_key_file_path_var }}", value: "{{ _acme_private_key_file }}" }
+    - { name: "acme_validated_challenge", value: "{{ domain_challenge_validated | default({}) }}" }
