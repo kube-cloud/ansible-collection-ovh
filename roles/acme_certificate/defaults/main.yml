@@ -37,6 +37,9 @@ acme_certificate_remaining_days: 10
 # ACME Account Key
 acme_account_key_src:
 
+# ACME Account Content
+acme_account_key_content:
+
 # ACME Account Email
 acme_account_email: administrator@kube-cloud.com
 

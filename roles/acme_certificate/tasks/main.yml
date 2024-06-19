@@ -64,8 +64,24 @@
     path: "{{ _acme_csr_file }}"
     state: present
 
-# Ensure DNS Challenge Initialized
-- name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure DNS Challenge Initialized (CN : {{ _acme_cert_common_name }})"
+# Ensure DNS Challenge Initialized from Content
+- name: "({{ ansible_distribution }}) OVH::ROLE::ACME - (CONTENT) Ensure DNS Challenge Initialized (CN : {{ _acme_cert_common_name }})"
+  community.crypto.acme_certificate:
+    account_key_content: "{{ acme_account_key_content }}"
+    account_email: "{{ acme_account_email }}"
+    csr: "{{ _acme_csr_file }}"
+    cert: "{{ _acme_cert_file }}"
+    fullchain: "{{ _acme_fullchain_cert_file }}"
+    challenge: "{{ _acme_challenge }}"
+    acme_directory: "{{ acme_directory }}"
+    remaining_days: "{{ acme_certificate_remaining_days }}"
+    acme_version: "{{ acme_version }}"
+  register: acme_dns_challenge
+  when:
+    - acme_account_key_content | length > 0
+
+# Ensure DNS Challenge Initialized from Path
+- name: "({{ ansible_distribution }}) OVH::ROLE::ACME - (PATH) Ensure DNS Challenge Initialized (CN : {{ _acme_cert_common_name }})"
   community.crypto.acme_certificate:
     account_key_src: "{{ acme_account_key_src }}"
     account_email: "{{ acme_account_email }}"
@@ -77,6 +93,9 @@
     remaining_days: "{{ acme_certificate_remaining_days }}"
     acme_version: "{{ acme_version }}"
   register: acme_dns_challenge
+  when:
+    - acme_account_key_content | length == 0
+    - acme_account_key_src | length > 0
 
 # Define Fact to Get Cert Days
 - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Define Fact to check if Challenge can continue"
