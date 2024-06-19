@@ -10,7 +10,7 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
-module: ovh_dns_record
+module: dns_record
 version_added: "1.0.0"
 short_description: Manage DNS zone records
 description:
@@ -79,7 +79,7 @@ options:
 
 EXAMPLES = r'''
 - name: "Create TXT Entrty to OVH"
-  kube_cloud.ovh.dns.ovh_dns_record:
+  kube_cloud.ovh.dns_record:
     endpoint: "ovh-eu"
     application_key: "2566789999999999"
     application_secret: "me4567009132467nhst5"
@@ -92,7 +92,7 @@ EXAMPLES = r'''
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.kube_cloud.ovh.plugins.module_utils.ovh import ovh_client
+from ..module_utils.ovh import ovh_client
 
 
 try:

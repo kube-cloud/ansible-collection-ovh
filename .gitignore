@@ -3,6 +3,7 @@
 
 # Tests Outputs
 test/output
+tests/output
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
