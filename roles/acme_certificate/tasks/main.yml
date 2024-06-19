@@ -107,7 +107,7 @@
   ansible.builtin.set_fact:
     acme_dns_challenge_enabled:  >-
       {{
-        acme_dns_challenge_cert_days <= acme_certificate_remaining_days
+        acme_dns_challenge_cert_days <= acme_certificate_remaining_days and
         acme_dns_challenge.changed | default(false) and
         (acme_dns_challenge.challenge_data | default({}) | length > 0) and
         (acme_dns_challenge.challenge_data[_acme_cert_common_name] | default({}) | length > 0) and
