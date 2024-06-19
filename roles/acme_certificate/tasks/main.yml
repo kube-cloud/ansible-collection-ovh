@@ -70,6 +70,8 @@
     account_key_src: "{{ acme_account_key_src }}"
     account_email: "{{ acme_account_email }}"
     csr: "{{ _acme_csr_file }}"
+    cert: "{{ _acme_cert_file }}"
+    fullchain: "{{ _acme_fullchain_cert_file }}"
     challenge: "{{ _acme_challenge }}"
     acme_directory: "{{ acme_directory }}"
     remaining_days: "{{ acme_certificate_remaining_days }}"
