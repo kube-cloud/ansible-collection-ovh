@@ -97,7 +97,7 @@
 
   # Ensure DNS Challenge Data Published on OVH
   - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure DNS Challenge Data Published on OVH"
-    kube_cloud.ovh.dns.ovh_dns_record:
+    kube_cloud.ovh.dns_record:
       endpoint: "{{ ovh_endpoint }}"
       application_key: "{{ ovh_application_key }}"
       application_secret: "{{ ovh_application_secret }}"
@@ -126,7 +126,7 @@
 
   # Ensure DNS Challenge Data Removed from OVH
   - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure DNS Challenge Data Removed from OVH"
-    kube_cloud.ovh.dns.ovh_dns_record:
+    kube_cloud.ovh.dns_record:
       endpoint: "{{ ovh_endpoint }}"
       application_key: "{{ ovh_application_key }}"
       application_secret: "{{ ovh_application_secret }}"
