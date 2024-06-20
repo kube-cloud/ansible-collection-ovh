@@ -160,7 +160,7 @@
     ignore_errors: true
     changed_when: false
 
-  when: "{{ acme_dns_challenge_enabled }}"
+  when: acme_dns_challenge_enabled
 
 # Ensure All Output Variables are Defined
 - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure All Output Facts are Defined"
