@@ -107,50 +107,6 @@
   ansible.builtin.set_fact:
     acme_dns_challenge_cert_days: "{{ acme_dns_challenge.cert_days | default(-1) }}"
 
-- name: "########### DEBUG : COMMON NAME"
-  ansible.builtin.debug:
-    var: _acme_cert_common_name
-
-- name: "########### DEBUG : CHALLENGE"
-  ansible.builtin.debug:
-    var: _acme_challenge
-
-- name: "########### DEBUG : CHALLENGE"
-  ansible.builtin.debug:
-    msg: "{{ acme_dns_challenge | default({}) }}"
-
-- name: "########### DEBUG : CHALLENGE DATA FROM ARRAY ENTRY"
-  ansible.builtin.debug:
-    msg: "{{ acme_dns_challenge['challenge_data'] | default({}) }}"
-
-- name: "########### DEBUG : CHALLENGE DATA FROM FIELD"
-  ansible.builtin.debug:
-    msg: "{{ acme_dns_challenge.challenge_data | default({}) }}"
-
-- name: "########### DEBUG : CHALLENGE DATA FOR COMMON NAME"
-  ansible.builtin.debug:
-    msg: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name] | default({}) }}"
-
-- name: "########### DEBUG : LENGTH CHALLENGE DATA FOR COMMON NAME"
-  ansible.builtin.debug:
-    msg: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name] | default({}) | length }}"
-
-- name: "########### DEBUG : CHALLENGE DATA FOR COMMON NAME AND CHALLENGE"
-  ansible.builtin.debug:
-    msg: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name][_acme_challenge] | default({}) }}"
-
-- name: "########### DEBUG : LENGTH CHALLENGE DATA FOR COMMON NAME AND CHALLENGE"
-  ansible.builtin.debug:
-    msg: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name][_acme_challenge] | default({}) | length }}"
-
-- name: "########### DEBUG : CERT DAYS"
-  ansible.builtin.debug:
-    msg: "{{ acme_dns_challenge_cert_days }}"
-
-- name: "########### DEBUG : REMAINING DAYS"
-  ansible.builtin.debug:
-    msg: "{{ acme_certificate_remaining_days }}"
-
 # Define Fact to check if Challenge can continue
 - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Define Fact to check if Challenge can continue"
   ansible.builtin.set_fact:
@@ -177,6 +133,50 @@
       record_type: "TXT"
       target: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name][_acme_challenge].resource_value }}"
       state: 'present'
+
+  - name: "########### DEBUG : ACME acme_directory"
+    ansible.builtin.debug:
+      var: acme_directory
+
+  - name: "########### DEBUG : ACME acme_account_key_src"
+    ansible.builtin.debug:
+      var: acme_account_key_src
+
+  - name: "########### DEBUG : ACME acme_account_email"
+    ansible.builtin.debug:
+      var: acme_account_email
+
+  - name: "########### DEBUG : ACME _acme_csr_file"
+    ansible.builtin.debug:
+      var: _acme_csr_file
+
+  - name: "########### DEBUG : ACME _acme_cert_file"
+    ansible.builtin.debug:
+      var: _acme_cert_file
+
+  - name: "########### DEBUG : ACME _acme_fullchain_cert_file"
+    ansible.builtin.debug:
+      var: _acme_fullchain_cert_file
+
+  - name: "########### DEBUG : ACME _acme_intermediatechain_cert_file"
+    ansible.builtin.debug:
+      var: _acme_intermediatechain_cert_file
+
+  - name: "########### DEBUG : ACME _acme_challenge"
+    ansible.builtin.debug:
+      var: _acme_challenge
+
+  - name: "########### DEBUG : ACME acme_certificate_remaining_days"
+    ansible.builtin.debug:
+      var: acme_certificate_remaining_days
+
+  - name: "########### DEBUG : ACME acme_version"
+    ansible.builtin.debug:
+      var: acme_version
+
+  - name: "########### DEBUG : ACME acme_dns_challenge"
+    ansible.builtin.debug:
+      var: acme_dns_challenge
 
   # Ensure DNS Challenge Validated and Certificates Created
   - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure DNS Challenge Validated and Certificates Created"
