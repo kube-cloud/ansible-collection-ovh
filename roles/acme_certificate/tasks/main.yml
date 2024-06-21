@@ -110,6 +110,10 @@
   ansible.builtin.debug:
     var: _acme_challenge
 
+- name: "########### DEBUG : CHALLENGE DATA"
+  ansible.builtin.debug:
+    msg: "{{ acme_dns_challenge.challenge_data | default({}) }}"
+
 - name: "########### DEBUG : CHALLENGE DATA FOR COMMON NAME"
   ansible.builtin.debug:
     msg: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name] | default({}) }}"
