@@ -110,7 +110,15 @@
   ansible.builtin.debug:
     var: _acme_challenge
 
-- name: "########### DEBUG : CHALLENGE DATA"
+- name: "########### DEBUG : CHALLENGE"
+  ansible.builtin.debug:
+    msg: "{{ acme_dns_challenge | default({}) }}"
+
+- name: "########### DEBUG : CHALLENGE DATA FROM ARRAY ENTRY"
+  ansible.builtin.debug:
+    msg: "{{ acme_dns_challenge['challenge_data'] | default({}) }}"
+
+- name: "########### DEBUG : CHALLENGE DATA FROM FIELD"
   ansible.builtin.debug:
     msg: "{{ acme_dns_challenge.challenge_data | default({}) }}"
 
