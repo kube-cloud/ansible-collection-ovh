@@ -76,7 +76,7 @@
     acme_directory: "{{ acme_directory }}"
     remaining_days: "{{ acme_certificate_remaining_days }}"
     acme_version: "{{ acme_version }}"
-  register: acme_dns_challenge
+  register: acme_dns_challenge_content
   when:
     - acme_account_key_content | length > 0
 
@@ -92,10 +92,15 @@
     acme_directory: "{{ acme_directory }}"
     remaining_days: "{{ acme_certificate_remaining_days }}"
     acme_version: "{{ acme_version }}"
-  register: acme_dns_challenge
+  register: acme_dns_challenge_path
   when:
     - acme_account_key_content | length == 0
     - acme_account_key_src | length > 0
+
+# Define Fact to Get ACME DNS Challenge
+- name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Define Fact to Get ACME DNS Challenge"
+  ansible.builtin.set_fact:
+    acme_dns_challenge: "{{ acme_dns_challenge_content if acme_account_key_content | length > 0 else acme_dns_challenge_path }}"
 
 # Define Fact to Get Cert Days
 - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Define Fact to check if Challenge can continue"
