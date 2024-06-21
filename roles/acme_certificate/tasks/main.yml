@@ -121,6 +121,19 @@
 
 - block:
 
+  # Ensure Already Generated Files are Cleaned
+  - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure Already Generated Files are Cleaned"
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - "{{ _acme_fullchain_cert_key_file }}"
+      - "{{ _acme_fullchain_cert_file }}"
+      - "{{ _acme_cert_file }}"
+      - "{{ _acme_intermediatechain_cert_file }}"
+      - "{{ _acme_csr_file }}"
+    ignore_errors: true
+
   # Ensure DNS Challenge Data Published on OVH
   - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure DNS Challenge Data Published on OVH"
     kube_cloud.ovh.dns_record:
@@ -133,54 +146,6 @@
       record_type: "TXT"
       target: "{{ acme_dns_challenge.challenge_data[_acme_cert_common_name][_acme_challenge].resource_value }}"
       state: 'present'
-
-  - name: "########### DEBUG : ACME acme_directory"
-    ansible.builtin.debug:
-      var: acme_directory
-
-  - name: "########### DEBUG : ACME acme_account_key_content"
-    ansible.builtin.debug:
-      var: acme_account_key_content
-
-  - name: "########### DEBUG : ACME acme_account_key_src"
-    ansible.builtin.debug:
-      var: acme_account_key_src
-
-  - name: "########### DEBUG : ACME acme_account_email"
-    ansible.builtin.debug:
-      var: acme_account_email
-
-  - name: "########### DEBUG : ACME _acme_csr_file"
-    ansible.builtin.debug:
-      var: _acme_csr_file
-
-  - name: "########### DEBUG : ACME _acme_cert_file"
-    ansible.builtin.debug:
-      var: _acme_cert_file
-
-  - name: "########### DEBUG : ACME _acme_fullchain_cert_file"
-    ansible.builtin.debug:
-      var: _acme_fullchain_cert_file
-
-  - name: "########### DEBUG : ACME _acme_intermediatechain_cert_file"
-    ansible.builtin.debug:
-      var: _acme_intermediatechain_cert_file
-
-  - name: "########### DEBUG : ACME _acme_challenge"
-    ansible.builtin.debug:
-      var: _acme_challenge
-
-  - name: "########### DEBUG : ACME acme_certificate_remaining_days"
-    ansible.builtin.debug:
-      var: acme_certificate_remaining_days
-
-  - name: "########### DEBUG : ACME acme_version"
-    ansible.builtin.debug:
-      var: acme_version
-
-  - name: "########### DEBUG : ACME acme_dns_challenge"
-    ansible.builtin.debug:
-      var: acme_dns_challenge
 
   # Ensure DNS Challenge Validated and Certificates Created
   - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - [CONTENT] - Ensure DNS Challenge Validated and Certificates Created"
@@ -219,6 +184,13 @@
         - acme_account_key_content | length == 0
         - acme_account_key_src | length > 0
 
+  # Ensure ullchain Certificate and Private Key are Combined
+  - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure ullchain Certificate and Private Key are Combined"
+    ansible.builtin.command: >
+      cat {{ _acme_fullchain_cert_file }} {{ _acme_private_key_file }} > {{ _acme_fullchain_cert_key_file }}
+    args:
+      creates: "{{ _acme_fullchain_cert_key_file }}"
+
   # Define Fact to Get ACME DNS Challenge
   - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Define Fact to Get ACME DNS Challenge"
     ansible.builtin.set_fact:
@@ -238,7 +210,7 @@
       state: absent
     ignore_errors: true
     changed_when: false
-
+  
   when: acme_dns_challenge_enabled
 
 # Ensure All Output Variables are Defined
@@ -248,6 +220,7 @@
   loop:
     - { name: "{{ acme_cert_file_path_var }}", value: "{{ _acme_cert_file }}" }
     - { name: "{{ acme_fullchain_cert_file_path_var }}", value: "{{ _acme_fullchain_cert_file }}" }
+    - { name: "{{ acme_fullchain_cert_and_key_file_path_var }}", value: "{{ _acme_fullchain_cert_key_file }}" }
     - { name: "{{ acme_intermediate_cert_file_path_var }}", value: "{{ _acme_intermediatechain_cert_file }}" }
     - { name: "{{ acme_csr_file_path_var }}", value: "{{ _acme_csr_file }}" }
     - { name: "{{ acme_private_key_file_path_var }}", value: "{{ _acme_private_key_file }}" }

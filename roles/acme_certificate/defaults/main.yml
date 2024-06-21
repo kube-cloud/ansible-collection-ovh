@@ -177,6 +177,9 @@ acme_cert_file_path_var: "acme_cert_file"
 # ACME Certificate File Path Var
 acme_fullchain_cert_file_path_var: "acme_fullchain_cert_file"
 
+# ACME Certificate and Key File Path Var
+acme_fullchain_cert_and_key_file_path_var: "acme_fullchain_cert_and_key_file"
+
 # ACME Certificate File Path Var
 acme_intermediate_cert_file_path_var: "acme_intermediate_cert_file"
 
