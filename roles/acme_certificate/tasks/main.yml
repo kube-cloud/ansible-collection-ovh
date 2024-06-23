@@ -131,7 +131,6 @@
       - "{{ _acme_fullchain_cert_file }}"
       - "{{ _acme_cert_file }}"
       - "{{ _acme_intermediatechain_cert_file }}"
-      - "{{ _acme_csr_file }}"
     ignore_errors: true
 
   # Ensure DNS Challenge Data Published on OVH
