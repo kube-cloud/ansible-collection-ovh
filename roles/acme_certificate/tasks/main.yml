@@ -184,7 +184,7 @@
         - acme_account_key_src | length > 0
 
   # Ensure ullchain Certificate and Private Key are Combined
-  - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure ullchain Certificate and Private Key are Combined"
+  - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure Fullchain Certificate and Private Key are Combined"
     ansible.builtin.command: >
       cat {{ _acme_fullchain_cert_file }} {{ _acme_private_key_file }} > {{ _acme_fullchain_cert_key_file }}
     args:
