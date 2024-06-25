@@ -183,12 +183,17 @@
         - acme_account_key_content | length == 0
         - acme_account_key_src | length > 0
 
-  # Ensure ullchain Certificate and Private Key are Combined
-  - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure Fullchain Certificate and Private Key are Combined"
+  # Ensure Fullchain Certificate and Private Key are Readed
+  - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure Fullchain Certificate and Private Key are Readed"
     ansible.builtin.command: >
-      cat {{ _acme_fullchain_cert_file }} {{ _acme_private_key_file }} | tee {{ _acme_fullchain_cert_key_file }}
-    args:
-      creates: "{{ _acme_fullchain_cert_key_file }}"
+      cat {{ _acme_fullchain_cert_file }} {{ _acme_private_key_file }}
+    register: _acme_fullchain_cert_key_content
+
+  # Ensure Fullchain Certificate and Private Key are Stored
+  - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Ensure Fullchain Certificate and Private Key are Combined"
+    ansible.builtin.copy:
+      content: "{{ _acme_fullchain_cert_key_content.stdout }}"
+      dest: "{{ _acme_fullchain_cert_key_file }}"
 
   # Define Fact to Get ACME DNS Challenge
   - name: "({{ ansible_distribution }}) OVH::ROLE::ACME - Define Fact to Get ACME DNS Challenge"
